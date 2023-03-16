@@ -156,11 +156,11 @@ def process_event():
         event_logs = event_filter.get_new_entries()
         for event_log in event_logs:
             bytesHTTPReq = event_log['args']["bytesHTTPReq"]
-			context =  event_log['args']['context']
+            context =  event_log['args']['context']
 
-			actualHTTPReq = pickle.loads(bytesHTTPReq)
-     		response = requests.request(method=actualHTTPReq.method, url=actualHTTPReq.url, headers=actualHTTPReq.headers, data=actualHTTPReq.data)
-			bytesHTTPRes = pickle.dumps(response)
+            actualHTTPReq = pickle.loads(bytesHTTPReq)
+            response = requests.request(method=actualHTTPReq.method, url=actualHTTPReq.url, headers=actualHTTPReq.headers, data=actualHTTPReq.data)
+            bytesHTTPRes = pickle.dumps(response)
             tx_hash = contract.functions.response_handler(context,bytesHTTPRes).build_transaction({
                 'gas': 2000000,
                 'gasPrice': web3.to_wei('50', 'gwei'),

@@ -159,7 +159,7 @@ def forward_to_contract(HTTPReq):
      bytesHTTPReq = pickle.dumps(HTTPReq)
      context = createUniqueContext()
      event_filter = contract_client.events.get_response.createFilter(fromBlock='latest',argument_filters={'id':context})
-    tx_hash = contract.functions.request_handler(string(context),bytesHTTPReq).build_transaction({
+     tx_hash = contract.functions.request_handler(string(context),bytesHTTPReq).build_transaction({
     'gas': 2000000,
     'gasPrice': web3.to_wei('50', 'gwei'),
     'nonce': web3.eth.get_transaction_count(account.address)
@@ -167,7 +167,7 @@ def forward_to_contract(HTTPReq):
      signed_tx = account.signTransaction(tx_hash)
      tx_receipt = web3.eth.send_raw_transaction(signed_tx.rawTransaction)
      print(f"Transaction sent with tx_hash: {tx_receipt.hex()}")
-    while True:
+     while True:
         event_logs = event_filter.get_new_entries()
         for event_log in event_logs:
             bytesHTTPRes = event_log['args']["bytesHTTPRes"]
