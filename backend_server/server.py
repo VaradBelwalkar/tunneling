@@ -155,19 +155,20 @@ def process_event():
     while True:
         event_logs = event_filter.get_new_entries()
         for event_log in event_logs:
-            bytesHTTPReq = event_log['args']["bytesHTTPReq"]
-            context =  event_log['args']['context']
-
-            actualHTTPReq = pickle.loads(bytesHTTPReq)
-            response = requests.request(method=actualHTTPReq.method, url=actualHTTPReq.url, headers=actualHTTPReq.headers, data=actualHTTPReq.data)
-            bytesHTTPRes = pickle.dumps(response)
-            tx_hash = contract.functions.response_handler(context,bytesHTTPRes).build_transaction({
-                'gas': 2000000,
-                'gasPrice': web3.to_wei('50', 'gwei'),
-                'nonce': web3.eth.get_transaction_count(account.address)
-            })
-            signed_tx = account.signTransaction(tx_hash)
-            tx_receipt = web3.eth.send_raw_transaction(signed_tx.rawTransaction)
-            print(f"Transaction sent with tx_hash: {tx_receipt.hex()}")
+          bytesHTTPReq = event_log['args']["bytesHTTPReq"]
+          context =  event_log['args']['context']
+          
+          jsonHTTPReq = pickle.loads(bytesHTTPReq)
+          actualHTTPReq = json.loads(jsonHTTPReq)
+          response = requests.request(method=actualHTTPReq.method, url=actualHTTPReq.url, headers=actualHTTPReq.headers, data=actualHTTPReq.data)
+          bytesHTTPRes = pickle.dumps(response)
+          tx_hash = contract.functions.response_handler(context,bytesHTTPRes).build_transaction({
+              'gas': 2000000,
+              'gasPrice': web3.to_wei('50', 'gwei'),
+              'nonce': web3.eth.get_transaction_count(account.address)
+          })
+          signed_tx = account.signTransaction(tx_hash)
+          tx_receipt = web3.eth.send_raw_transaction(signed_tx.rawTransaction)
+          print(f"Transaction sent with tx_hash: {tx_receipt.hex()}")
 
 process_event()

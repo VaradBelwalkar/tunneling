@@ -68,3 +68,5 @@ uvloop==0.17.0
 webcolors==1.12
 xmlrpclib==1.0.1
 zipp==1.0.0
+dotenv
+web3

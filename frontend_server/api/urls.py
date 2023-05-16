@@ -19,7 +19,7 @@ from .views import *
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('', forward_to_contract),
     path(r'^.*$',forward_to_contract)
 
 ]
