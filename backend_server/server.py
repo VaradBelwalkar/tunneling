@@ -2,6 +2,7 @@ from web3 import Web3
 from web3.auto import w3
 import os
 import pickle
+import requests
 import json
 from dotenv import load_dotenv,find_dotenv
 from web3.middleware import geth_poa_middleware
@@ -34,9 +35,8 @@ def process_event():
           bytesHTTPReq = event_log['args']["bytesHTTPReq"]
           context =  event_log['args']['context']
           
-          jsonHTTPReq = pickle.loads(bytesHTTPReq)
-          actualHTTPReq = json.loads(jsonHTTPReq)
-          response = requests.request(method=actualHTTPReq.method, url=actualHTTPReq.url, headers=actualHTTPReq.headers, data=actualHTTPReq.data)
+          actualHTTPReq = pickle.loads(bytesHTTPReq)
+          response = requests.request(method=actualHTTPReq['method'], url=actualHTTPReq['url'], headers=actualHTTPReq['headers'], data=actualHTTPReq['body'])
           bytesHTTPRes = pickle.dumps(response)
           tx_hash = contract.functions.response_handler(context,bytesHTTPRes).build_transaction({
               'gas': 2000000,

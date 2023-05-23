@@ -25,6 +25,7 @@ web3 = Web3(Web3.HTTPProvider("https://sepolia.infura.io/v3/"+infura_key)) # Rep
 # Set up contract instance and event filter
 # Replace with your own contract ABI
 contract_abi = config_json["contract_abi"]
+port  = config_json["port"]
 contract = web3.eth.contract(address=contract_address, abi=contract_abi)
 
 account = w3.eth.account.from_key(private_key_hex)
@@ -33,7 +34,7 @@ account = w3.eth.account.from_key(private_key_hex)
 def serialize_http_request(http_request):
     serialized_request = {
         'method': http_request.method,
-        'path': http_request.path,
+        'url': "http://localhost:"+str(port)+http_request.path,
         'headers': dict(http_request.headers),
         'body': http_request.body.decode('utf-8')
     }
@@ -53,7 +54,6 @@ def forward_to_contract(HTTPReq,path):
   #jsonHTTPReq = json.dumps(HTTPReq)
   bytesHTTPReq = serialize_http_request(HTTPReq)
   port = HTTPReq.META.get('SERVER_PORT')
-  print("The port used to access this server is: {port}")
   context = createUniqueContext()
   event_filter = contract.events.get_response.create_filter(fromBlock='latest',argument_filters={'context':context})
   tx_hash = contract.functions.request_handler(context,bytesHTTPReq).build_transaction({
