@@ -3,3 +3,4 @@ bin
 lib
 tests
 pyvenv.cfg
+config.json

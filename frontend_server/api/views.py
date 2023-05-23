@@ -3,6 +3,7 @@ from web3.auto import w3
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import os
+import json
 import pickle
 import json
 from dotenv import load_dotenv,find_dotenv
@@ -12,14 +13,11 @@ from eth_account import Account
 
 #dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(find_dotenv())
-
+config_file = open("config.json")
+config_json = json.load(config_file)
 infura_key = os.environ.get("INFURA_KEY")
 private_key_hex = os.environ.get("PRIVATE_KEY_HEX")
 contract_address = os.environ.get("CONTRACT_ADDRESS")
-#print(infura_key,private_key_hex,contract_address)
-#infura_key = "52d0c9535433469cbfdf69f11c11052a"
-#private_key_hex = "75a69d179ae87b2cdb17dbff6668961f2ea7f6bdb275b1b831b4b978c7cdf0df"
-#contract_address  = "0xF2238D43168DDa8eFec3Cd30cEc3Ae2a748B22D4"
 # Set up Web3 connection
 w3.middleware_onion.inject(geth_poa_middleware, layer=0)
 web3 = Web3(Web3.HTTPProvider("https://sepolia.infura.io/v3/"+infura_key)) # Replace with your own RPC endpoint
