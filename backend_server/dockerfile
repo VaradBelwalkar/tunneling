@@ -1,0 +1,6 @@
+FROM python:latest
+RUN mkdir /frontend
+WORKDIR /frontend
+RUN pip install python-dotenv web3
+COPY ./ ./
+CMD [ "./startup.sh" ]
