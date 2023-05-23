@@ -2,10 +2,13 @@ from web3 import Web3
 from web3.auto import w3
 import os
 import pickle
+import json
 from dotenv import load_dotenv,find_dotenv
 from web3.middleware import geth_poa_middleware
 from eth_account import Account
 load_dotenv(find_dotenv) 
+config_file = open("config.json")
+config_json = json.load(config_file)
 infura_key = os.environ.get('INFURA_KEY')
 private_key_hex = os.environ.get("PRIVATE_KEY_HEX")
 contract_address  = os.environ.get("CONTRACT_ADDRESS")
@@ -15,82 +18,7 @@ w3.middleware_onion.inject(geth_poa_middleware, layer=0)
 web3 = Web3(Web3.HTTPProvider("https://sepolia.infura.io/v3/"+infura_key)) # Replace with your own RPC endpoint
 
 # Replace with your own contract ABI
-contract_abi = [
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "context",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "bytes",
-				"name": "bytesHTTPReq",
-				"type": "bytes"
-			}
-		],
-		"name": "get_request",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "context",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "bytes",
-				"name": "bytesHTTPRes",
-				"type": "bytes"
-			}
-		],
-		"name": "get_response",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "context",
-				"type": "string"
-			},
-			{
-				"internalType": "bytes",
-				"name": "bytesHTTPReq",
-				"type": "bytes"
-			}
-		],
-		"name": "request_handler",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "context",
-				"type": "string"
-			},
-			{
-				"internalType": "bytes",
-				"name": "bytesHTTPRes",
-				"type": "bytes"
-			}
-		],
-		"name": "response_handler",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	}
-]
+contract_abi = config_json["contract_abi"]
 contract = web3.eth.contract(address=contract_address, abi=contract_abi)
 
 event_filter = contract.events.get_request.create_filter(fromBlock='latest')
