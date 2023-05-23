@@ -6,7 +6,7 @@ import json
 from dotenv import load_dotenv,find_dotenv
 from web3.middleware import geth_poa_middleware
 from eth_account import Account
-load_dotenv(find_dotenv) 
+load_dotenv(find_dotenv()) 
 config_file = open("config.json")
 config_json = json.load(config_file)
 infura_key = os.environ.get('INFURA_KEY')
