@@ -1,6 +1,6 @@
 FROM python:latest
 RUN mkdir /frontend
 WORKDIR /frontend
-RUN pip install django python-dotenv pickle web3
+RUN pip install django python-dotenv web3
 COPY ./ ./
-ENTRYPOINT ["bash","-c"]
+CMD [ "./startup.sh" ]
