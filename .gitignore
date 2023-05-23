@@ -4,3 +4,4 @@ lib
 tests
 pyvenv.cfg
 config.json
+__pycache__
