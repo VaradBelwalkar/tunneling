@@ -2,12 +2,12 @@ from web3 import Web3
 from web3.auto import w3
 import os
 import pickle
-from dotenv import load_dotenv
+from dotenv import load_dotenv,find_dotenv
 from web3.middleware import geth_poa_middleware
 from eth_account import Account
-load_dotenv() 
+load_dotenv(find_dotenv) 
 infura_key = os.environ.get('INFURA_KEY')
-private_key_hex = os.environ.get("PRIVATE_KEY")
+private_key_hex = os.environ.get("PRIVATE_KEY_HEX")
 contract_address  = os.environ.get("CONTRACT_ADDRESS")
 
 # Set up Web3 connection
@@ -17,80 +17,54 @@ web3 = Web3(Web3.HTTPProvider("https://sepolia.infura.io/v3/"+infura_key)) # Rep
 # Replace with your own contract ABI
 contract_abi = [
 	{
-		"anonymous": False,
+		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": True,
-				"internalType": "address",
-				"name": "previousOwner",
-				"type": "address"
-			},
-			{
-				"indexed": True,
-				"internalType": "address",
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "OwnershipTransferred",
-		"type": "event"
-	},
-	{
-		"anonymous": False,
-		"inputs": [
-			{
-				"indexed": False,
+				"indexed": false,
 				"internalType": "string",
-				"name": "filterValue",
+				"name": "context",
 				"type": "string"
 			},
 			{
-				"indexed": False,
-				"internalType": "string",
-				"name": "HTTPObj",
-				"type": "string"
+				"indexed": false,
+				"internalType": "bytes",
+				"name": "bytesHTTPReq",
+				"type": "bytes"
 			}
 		],
 		"name": "get_request",
 		"type": "event"
 	},
 	{
-		"anonymous": False,
+		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": False,
+				"indexed": false,
 				"internalType": "string",
-				"name": "filterValue",
+				"name": "context",
 				"type": "string"
 			},
 			{
-				"indexed": False,
-				"internalType": "string",
-				"name": "HTTPObj",
-				"type": "string"
+				"indexed": false,
+				"internalType": "bytes",
+				"name": "bytesHTTPRes",
+				"type": "bytes"
 			}
 		],
 		"name": "get_response",
 		"type": "event"
 	},
 	{
-		"inputs": [],
-		"name": "renounceOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "string",
-				"name": "filterValue",
+				"name": "context",
 				"type": "string"
 			},
 			{
-				"internalType": "string",
-				"name": "HTTPObj",
-				"type": "string"
+				"internalType": "bytes",
+				"name": "bytesHTTPReq",
+				"type": "bytes"
 			}
 		],
 		"name": "request_handler",
@@ -102,44 +76,18 @@ contract_abi = [
 		"inputs": [
 			{
 				"internalType": "string",
-				"name": "filterValue",
+				"name": "context",
 				"type": "string"
 			},
 			{
-				"internalType": "string",
-				"name": "HTTPObj",
-				"type": "string"
+				"internalType": "bytes",
+				"name": "bytesHTTPRes",
+				"type": "bytes"
 			}
 		],
 		"name": "response_handler",
 		"outputs": [],
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "transferOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "owner",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
 		"type": "function"
 	}
 ]

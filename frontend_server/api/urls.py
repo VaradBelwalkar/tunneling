@@ -1,3 +1,4 @@
+
 """api URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -16,11 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from .views import *
+from django.urls import re_path
 
 
 urlpatterns = [
-    path('', forward_to_contract),
-    path(r'^.*$',forward_to_contract)
+     re_path(r'^(?P<path>.*)$', forward_to_contract),
 
 ]
 
