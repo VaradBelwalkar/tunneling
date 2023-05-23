@@ -27,7 +27,6 @@ web3 = Web3(Web3.HTTPProvider("https://sepolia.infura.io/v3/"+infura_key)) # Rep
 contract_abi = config_json["contract_abi"]
 contract = web3.eth.contract(address=contract_address, abi=contract_abi)
 
-
 account = w3.eth.account.from_key(private_key_hex)
 
 
@@ -47,6 +46,7 @@ def createUniqueContext():
 
 
 # Define function to listen to event and process arguments
+#remove csrf checking policy for this function
 @csrf_exempt
 def forward_to_contract(HTTPReq,path):
   #Pickle the copy of request object without nested object which is of io.BufferReader type
