@@ -1,8 +1,8 @@
-## Bring localhost to Internet!
+## 🚀 Bring localhost to Internet!
 
 This platform provides you to bring the localhost server to the internet (only RESTful servers)
 
-### Initial Thoughs
+### Initial Thoughts
 - This project is created to entirely demonstrate the usecases of blockchain and the smart contracts and their usecases over testnets.  
 - This is **not** meant to be a real-time communication mechanism or any means.  
 - This is suitable for triggering some actions remotely in periodic way, where communication delay is not a concern.  
